@@ -83,3 +83,25 @@ action enum
 secure = md5(secure + Date.now())
 ```
 The `secure` field will available in next 10 seconds, so our request must finished in 10 seconds.
+
+### Methods
+vue-log can automated log the navigation info by every navigate success. but we can manually do the log by action.
+
+- in vue template
+```js
+<template>
+  <button name="add" @click="$log.click('AddButton')"></button>
+</template>
+```
+- in vue component
+```js
+this.$log.click('AddButton')
+```
+
+
+method signature
+```ts
+type method = 'view' | 'edit' | 'new' | 'delete' | 'navigate' | 'click' | 'request'
+
+this.$log[method](source: string, extra: any): void
+```
