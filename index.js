@@ -15,19 +15,18 @@ let currentRoute = null
 
 export default {
   install(Vue, options) {
-    const { router, endpoint, secure, app = 'main', interval = 1000 } = options
+    const { router, endpoint, secure, app = 'main', delay = 2000 } = options
     const buffers = []
 
     let timer = 0
     const log = info => {
-      const now = Date.now()
+      clearTimeout(timer)
       buffers.push(info)
-      if (now - timer > interval) {
+      timer = setTimeout(() => {
         const data = buffers.slice()
         buffers.length = 0
         data.length && flushLogs(data, endpoint, secure)
-      }
-      timer = now
+      }, delay)
     }
 
     if (!router) {
@@ -79,7 +78,6 @@ export default {
       let duration
       if ((duration = durations.get(from.name))) {
         duration = now - duration
-        console.log(from.name, duration)
         methods.navigate(from.name, { to: to.name, duration })
       }
     })
@@ -87,7 +85,7 @@ export default {
 }
 
 async function flushLogs(logs, endpoint, key) {
-  const ts = Math.ceil(Date.now() / 10000)
+  const ts = Date.now()
   const secure = md5(key + ts)
 
   let ret
@@ -96,10 +94,8 @@ async function flushLogs(logs, endpoint, key) {
       url: endpoint,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      params: { secure },
+      params: { secure, ts },
       data: { logs },
-      contentType: 'json',
-      responseType: 'json'
     })
     if (ret.data.code !== 0) {
       console.error('save logs to endpoint failed!', ret.data)
