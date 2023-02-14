@@ -29,7 +29,17 @@ Vue.use(logs, {
     },
 })
 ```
-Configration `router`、`endpoint`、`secure` are requried.
+Configration
+|field|type|required|remark|
+|---|---|---|---|
+|router|vue-router instance|true|vue-rouer for navigate info automated record |
+|app|string|false|app name, default: `main`|
+|endpoint|string|true|endpoint for logs submit to|
+|secure|string|true|server side security key|
+|userId|string|number|false|getter for current login user Id|
+|orgId|string|number|false|getter for current login user orgId|
+|interval|number|false|log buffer time, default: 2s|
+|usePath|boolean|false|use router path instead of name, default: `false`|
 
 ## Log Datastruct
 Logs will post to endpoint with `post` method use `axios`, like:
@@ -62,6 +72,7 @@ log document fields:
 |page|string|true|--|current page name|
 |source|string|true|--|current operate source|
 |action|enum|true|--|current operation|
+|ts|number|true|Date.now()|log timestamp|
 |orgId|string|false|--|login user orgId|
 |userId|string|false|--|login user id|
 |extra|any|false|--|extra data info|

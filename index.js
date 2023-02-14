@@ -15,7 +15,8 @@ let currentRoute = null
 
 export default {
   install(Vue, options) {
-    const { router, endpoint, secure, app = 'main', delay = 2000 } = options
+    const { router, endpoint, secure, app = 'main', delay = 2000, usePath = false } = options
+    const pageField = usePath ? 'path' : 'name'
     const buffers = []
 
     let timer = 0
@@ -51,12 +52,13 @@ export default {
         }
         const info = {
           app,
-          page: currentRoute ? currentRoute.name : '--',
+          page: currentRoute ? currentRoute[pageField] : '--',
           source,
           action,
           orgId: options.orgId,
           userId: options.userId,
-          extra
+          extra,
+          ts: Date.now()
         }
 
         if (action === ACTIONS.NAVIGATE) {
@@ -78,7 +80,7 @@ export default {
       let duration
       if ((duration = durations.get(from.name))) {
         duration = now - duration
-        methods.navigate(from.name, { to: to.name, duration })
+        methods.navigate(from[pageField], { to: to[pageField], duration })
       }
     })
   }
