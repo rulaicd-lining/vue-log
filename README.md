@@ -30,6 +30,7 @@ Vue.use(logs, {
 })
 ```
 Configration
+
 |field|type|required|remark|
 |---|---|---|---|
 |router|vue-router instance|true|vue-rouer for navigate info automated record |
@@ -40,6 +41,7 @@ Configration
 |orgId|string|number|false|getter for current login user orgId|
 |interval|number|false|log buffer time, default: 2s|
 |usePath|boolean|false|use router path instead of name, default: `false`|
+|routeNameFormatter|function|false|format route name |
 
 ## Log Datastruct
 Logs will post to endpoint with `post` method use `axios`, like:

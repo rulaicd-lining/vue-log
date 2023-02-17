@@ -43,6 +43,13 @@ export default {
       return
     }
 
+    const getRouteName = (route) => {
+      if (options.routeNameFormatter) {
+        return options.routeNameFormatter(route)
+      }
+      return route[pageField]
+    }
+
     // 监听操作
     const methods = {}
     Object.values(ACTIONS).forEach(action => {
@@ -52,7 +59,7 @@ export default {
         }
         const info = {
           app,
-          page: currentRoute ? currentRoute[pageField] : '--',
+          page: currentRoute ? getRouteName(currentRoute) : '--',
           source,
           action,
           orgId: options.orgId,
@@ -64,7 +71,7 @@ export default {
         if (action === ACTIONS.NAVIGATE) {
           info.page = info.source
         }
-        
+
         log(info)
       }
     })
@@ -80,7 +87,7 @@ export default {
       let duration
       if ((duration = durations.get(from.name))) {
         duration = now - duration
-        methods.navigate(from[pageField], { to: to[pageField], duration })
+        methods.navigate(getRouteName(from), { to: getRouteName(to), duration })
       }
     })
   }
