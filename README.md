@@ -37,8 +37,8 @@ Configration
 |app|string|false|app name, default: `main`|
 |endpoint|string|true|endpoint for logs submit to|
 |secure|string|true|server side security key|
-|userId|string|number|false|getter for current login user Id|
-|orgId|string|number|false|getter for current login user orgId|
+|userId|string/number|false|getter for current login user Id|
+|orgId|string/number|false|getter for current login user orgId|
 |interval|number|false|log buffer time, default: 2s|
 |usePath|boolean|false|use router path instead of name, default: `false`|
 |routeNameFormatter|function|false|format route name |
