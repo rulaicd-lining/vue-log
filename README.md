@@ -100,6 +100,8 @@ The `secure` field will available in next 10 seconds, so our request must finish
 ### Methods
 vue-log can automated log the navigation info by every navigate success. but we can manually do the log by action.
 
+Every action method will return a object with a `flush` method to flush logs immediately.
+
 - in vue template
 ```js
 <template>
@@ -109,6 +111,9 @@ vue-log can automated log the navigation info by every navigate success. but we 
 - in vue component
 ```js
 this.$log.click('AddButton')
+
+// flush immediately
+this.$log.click('AddButton').flush()
 ```
 
 

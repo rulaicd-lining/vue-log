@@ -18,15 +18,18 @@ export default {
     const { router, endpoint, secure, app = 'main', delay = 2000, usePath = false } = options
     const pageField = usePath ? 'path' : 'name'
     const buffers = []
+    const flush = () => {
+      const data = buffers.slice()
+      buffers.length = 0
+      data.length && flushLogs(data, endpoint, secure)
+    }
 
     let timer = 0
     const log = info => {
       clearTimeout(timer)
       buffers.push(info)
       timer = setTimeout(() => {
-        const data = buffers.slice()
-        buffers.length = 0
-        data.length && flushLogs(data, endpoint, secure)
+        flush()
       }, delay)
     }
 
@@ -73,6 +76,8 @@ export default {
         }
 
         log(info)
+
+        return { flush  }
       }
     })
 
